@@ -1,0 +1,21 @@
+services:
+    web:
+        container_name: web
+        image: node:16.17.1-alpine
+        ports: 
+            - "3000:3000"
+        environment:
+            - "REACT_APP_ES_HOST=http://localhost:8080"
+            - "REACT_APP_ES_INDEX=cv-transcriptions"
+            - "network.host=0.0.0.0" # Required for colima
+            # - "BROWSER=none"
+        working_dir: "/app"
+        volumes:
+            - .:/app
+        command: "/bin/sh -c 'npm install && npm start'"
+        networks:
+            - elastic-network
+
+networks:
+  elastic-network:
+    external: true
