@@ -7,7 +7,7 @@ May remove the deployment link later
 [Original Source](https://www.dropbox.com/scl/fi/i9yvfqpf7p8uye5o8k1sj/common_voice.zip?rlkey=lz3dtjuhekc3xw4jnoeoqy5yu&dl=0) | 
 [Kaggle](https://www.kaggle.com/datasets/mozillaorg/common-voice)  
 
-## AWS EC2 Deployment Prerequesite
+## AWS EC2 Deployment Prerequisite
 1. Firstly, you need to know free-tier is not enough to run this server.
 2. Minimum requirement is 6GB memory. Free Tier only provides 1GB memory.
 3. You need to generate your own `final_cv-valid-dev.csv` file which is used for the elastic search index
@@ -18,7 +18,7 @@ May remove the deployment link later
 ## AWS EC2 Deployment 
 1. Create an account on AWS and look for EC2
 2. Launch an instance (Linux OS)
-3. Ensure your inbound rules to be SSH port (22), port 9200 (ideally should be within the EC2, if you want to hide the ES index) and port 3000 to connectable from any IP for easy configuration.
+3. Ensure your inbound rules to be SSH port (22), port 8080 (NGINX port) and port 3000 to connectable from any IP for easy configuration.
 4. Set key-pair and you should get the RSA file.
    1. Firstly, move it to `~/.ssh`
    2. Secondly, `chmod 400 ${ssh_file}`
@@ -26,7 +26,7 @@ May remove the deployment link later
 6. For fast transfer, you can simply tar all `elastic-backend` and tar all `search-ui` (without node_modules)
    1. `tar -czvf elastic-backend.tar elastic-backend`
    2. `tar -czvf search-ui.tar search-ui`
-   3. `sftp -i ~/.ssh/${ssh_file} ec-user2@<your public ip ec2 instance>`
+   3. `sftp -i ~/.ssh/${ssh_file} ec2-user@<your public ip ec2 instance>`
       1. For convenient ssh/sftp, you can modify your `~/.ssh/config`. Follow the steps at the page below.
    4. `put elastic-backend.tar .`
    5. `put search-ui.tar  .`
@@ -36,7 +36,7 @@ May remove the deployment link later
       3. After the server is started, run `python cv-decode.py`
       4. The whole process should take around 15 minutes at most
    7. Exit the sftp
-7.  Ssh into the EC2 instance: `ssh -i ~/.ssh/${ssh_file} ec-user2@<your public ip ec2 instance>`
+7.  Ssh into the EC2 instance: `ssh -i ~/.ssh/${ssh_file} ec2-user@<your public ip ec2 instance>`
 8. Setup the terminal: `echo "PS1='\H \$(pwd) \$ '" >> ~/.bashrc`
 9.  Update the package installer: `sudo yum update -y`
 10. Install docker: `sudo yum install docker -y`
@@ -55,7 +55,7 @@ May remove the deployment link later
     5.  `mv final_cv-valid-dev.csv data`
 19. Modify docker-compose.yaml
     1.  Under `elastic-backend`, change all `"http.cors.allow-origin='http://localhost:3000'"` into `"http.cors.allow-origin='http://<EC2 instance public domain>:3000'"`
-    2.  Under `search-ui`, change `"REACT_APP_ES_HOST=http://localhost:9200"` into `"REACT_APP_ES_HOST=http://<EC2 instance public domain>:9200"`
+    2.  Under `search-ui`, change `"REACT_APP_ES_HOST=http://localhost:8080"` into `"REACT_APP_ES_HOST=http://<EC2 instance public domain>:8080"`
     3.  `<EC2 instance public domain>` should look something like `http://ec2-14-113-123-45.ap-southeast-1.compute.amazonaws.com`
 20. Start the elastic-backend: `cd elastic-backend && docker-compose up -d && cd ..`
 21. Start the search-ui (Make sure elastic-backend docker compose is fully completed): `cd search-ui && docker-compose up -d`

@@ -31,7 +31,7 @@ docker run -d -p 9200:9200 \
 docker.elastic.co/elasticsearch/elasticsearch:8.11.3
 ```
 
-### Local install NGIX for macOS
+### Local install NGINX for macOS
 1. `brew install nginx`
 2. Look for nginx config via `brew info nginx`
 3. Start nginx `brew services start nginx`
