@@ -1,7 +1,7 @@
-# Automatic Speech Recognition API
-Deployment URL: [Deployment Link](http://ec2-18-140-239-15.ap-southeast-1.compute.amazonaws.com:3000)  
-Deployed in HTTP, May not load in HTTPS.  
-May remove the deployment link later
+# Automatic Speech Recognition API + Elastic Search Server
+
+# Deployment of Elastic Search Server
+Deployment URL: [Deployment Link] (Removed)  
 
 ## Data Used (I will put the data here since I won't be upload this dataset)
 [Original Source](https://www.dropbox.com/scl/fi/i9yvfqpf7p8uye5o8k1sj/common_voice.zip?rlkey=lz3dtjuhekc3xw4jnoeoqy5yu&dl=0) | 
